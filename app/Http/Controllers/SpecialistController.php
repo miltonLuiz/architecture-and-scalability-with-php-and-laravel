@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSpecialistRequest;
+use App\Jobs\GenerateReportJob;
 use App\Models\Specialist;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class SpecialistController extends Controller
@@ -51,17 +55,9 @@ class SpecialistController extends Controller
         return response()->noContent();
     }
 
-    public function highestRated(int $limit = 10)
+    public function highestRated(int $limit = 10): Response
     {
-        $specialists = Specialist::select(
-                ['specialists.id', 'specialists.name', DB::raw('avg(reviews.rating) avg_rating')]
-            )
-            ->join('reviews', 'reviews.specialist_id', '=', 'specialists.id')
-            ->groupBy(['specialists.id', 'specialists.name'])
-            ->orderBy('avg_rating', 'desc')
-            ->limit($limit)
-            ->get();
-
-        return $specialists;
+        GenerateReportJob::dispatch(Auth::user()->email);
+        return response()->noContent();
     }
 }
