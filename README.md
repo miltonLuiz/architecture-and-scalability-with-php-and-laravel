@@ -64,8 +64,14 @@ To reduce the load on the database, I added a cache layer, optimizing the applic
 
 To handle complex reports that require real-time updates, I explored the strategy of storing static files in external services.
 
+### 5. Performance Enhancement with Swoole and Laravel Octane
+
+Going beyond PHP-FPM, I further improved my architecture by incorporating Swoole into my application. Given that my application is Laravel-based, I opted for Laravel Octane to seamlessly integrate Swoole into my structure.
+
+With this implementation, my application experienced a significant performance boost, increasing its efficiency by up to fivefold. This considerably simplifies scalability, as discussed in previous courses.
+
 In this final architecture, users access the front-end, which passes through a load balancer before reaching the API. The API stores precomputed data in an in-memory database, reads and writes data to the relational database, and publishes messages to a message broker. A queue worker consumes messages from the message broker, saves reports in storage, and sends emails to an email server.
 
 ## Results
 
-Following all the implementations, the results were significant. In the initial test, we were handling approximately 112 requests per second, totaling 1123 requests in 10 seconds. After implementing the configurations, this number increased to an impressive 1504 requests per second in 10 seconds.
+Following all the implementations, the results were remarkable. In the initial test, I was handling approximately 112 requests per second, totaling 1123 requests in 10 seconds. However, after implementing the configurations, including the integration of Swoole and Laravel Octane, my application responded at an astonishing rate of 7500 requests per second in 10 seconds. This substantial enhancement in performance not only met but far exceeded my scalability goals, making my application highly responsive and well-prepared for increased demands.
